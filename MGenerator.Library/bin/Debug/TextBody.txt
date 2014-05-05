@@ -1,0 +1,126 @@
+﻿{{{{{
+Replacement Tokens:
+	0	- TABLE Name
+	1	- SELECT Columns
+	2	- PRIMARY KEY Constraint
+	3	- UPDATE Column/Parameter Assignments
+	4	- INSERT Columns
+	5	- INSERT Parameters
+}}}}}
+
+ BEGIN TRY 
+    
+	IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Log_ProcedureCall]') AND type in (N'P', N'PC')) 
+	BEGIN      
+			DECLARE @ProcName VARCHAR(100)
+			DECLARE @DBName2 VARCHAR(100) 
+				SET @ProcName = OBJECT_NAME(@@PROCID)
+				SET @DBName2 = DB_NAME() 
+			EXECUTE [dbo].[Log_ProcedureCall] @ProcName,@DBName2
+	END 
+ 
+	IF( @User = NULL )
+		BEGIN
+			SELECT	@User = SYSTEM_USER
+		END
+
+	-- -------------------------------------------------------------------------
+	-- SELECT ONE BY PRIMARY KEY
+	-- -------------------------------------------------------------------------
+	IF( @Operation = 1 )
+		BEGIN
+			SELECT	{1}
+			FROM	{0}
+			{2}
+		END
+		
+	-- -------------------------------------------------------------------------
+	-- SELECT ALL
+	-- -------------------------------------------------------------------------
+	IF( @Operation = 2 )
+		BEGIN
+			SELECT	{1}
+			FROM	{0}
+		END
+
+	-- -------------------------------------------------------------------------
+	-- SELECT ALL PRIMARY KEYS (ID ENUMERATOR)
+	-- -------------------------------------------------------------------------
+	IF( @Operation = 3 )
+		BEGIN
+			SELECT	{6}
+			FROM	{0}
+		END
+
+	-- -------------------------------------------------------------------------
+	-- UPDATE
+	-- -------------------------------------------------------------------------
+	IF( @Operation = 4 )
+		BEGIN
+			UPDATE	{0}
+			SET		{3}
+			{2}
+		END
+
+	-- -------------------------------------------------------------------------
+	-- INSERT
+	-- -------------------------------------------------------------------------
+	IF( @Operation = 5 )
+		BEGIN
+			INSERT INTO
+					{0} (
+						{4}
+					)
+			VALUES	(
+						{5}
+					)
+			
+			SELECT	SCOPE_IDENTITY( )
+		END
+
+	-- -------------------------------------------------------------------------
+	-- DELETE
+	-- -------------------------------------------------------------------------
+	IF( @Operation = 6 )
+		BEGIN
+			DELETE FROM
+					{0}
+			{2}
+		END
+	END TRY 
+
+	BEGIN CATCH 
+		DECLARE @ERROR_NUMBER		INT
+		DECLARE @ERROR_SEVERITY		INT
+		DECLARE @ERROR_STATE		INT
+		DECLARE @ERROR_PROCEDURE	VARCHAR(100)
+		DECLARE @ERROR_LINE			INT
+		DECLARE @ERROR_MESSAGE		VARCHAR(MAX) 
+		
+		
+	SELECT
+        @ERROR_NUMBER		= ERROR_NUMBER(),
+        @ERROR_SEVERITY		= ERROR_SEVERITY(),
+        @ERROR_STATE		= ERROR_STATE(),
+        @ERROR_PROCEDURE	= ERROR_PROCEDURE(),
+        @ERROR_LINE			= ERROR_LINE(),
+        @ERROR_MESSAGE		= ERROR_MESSAGE()
+        
+		INSERT INTO [master].[dbo].[SqlErrors]
+           ([ErrorTime]
+           ,[ERROR_NUMBER]
+           ,[ERROR_SEVERITY]
+           ,[ERROR_PROCEDURE]
+           ,[ERROR_LINE]
+           ,[ERROR_STATE]
+           ,[ERROR_MESSAGE])
+		VALUES
+           (GETDATE()
+           ,@ERROR_NUMBER
+           ,@ERROR_SEVERITY	
+           ,@ERROR_PROCEDURE
+           ,@ERROR_LINE	
+           ,@ERROR_STATE
+           ,@ERROR_MESSAGE)
+	END CATCH 
+GO

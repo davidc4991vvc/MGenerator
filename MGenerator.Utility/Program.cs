@@ -5,6 +5,7 @@ using System.Text;
 using MGenerator;
 using MGenerator.Library;
 using IniParser;
+using IniParser.Model;
 
 namespace MGenerator.Utility
 {

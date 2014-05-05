@@ -264,11 +264,10 @@ namespace MGenerator.Tools
 
             dbNames.Add("ReportServer");
             dbNames.Add("ReportServerTempDB");
-            //dbNames.Add("master");
+            dbNames.Add("master");
             dbNames.Add("msdb");
             dbNames.Add("model");
             dbNames.Add("tempdb");
-            dbNames.Add("BRTGRN");
 
             return dbNames;
         }

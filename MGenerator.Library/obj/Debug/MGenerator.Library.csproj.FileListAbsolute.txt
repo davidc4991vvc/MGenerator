@@ -1,0 +1,8 @@
+G:\MGenerator\MGenerator.Library\bin\Debug\TextBody.txt
+G:\MGenerator\MGenerator.Library\bin\Debug\TextHeader.txt
+G:\MGenerator\MGenerator.Library\bin\Debug\MGenerator.Library.dll
+G:\MGenerator\MGenerator.Library\bin\Debug\MGenerator.Library.pdb
+G:\MGenerator\MGenerator.Library\bin\Debug\Microsoft.SqlServer.DmfSqlClrWrapper.dll
+G:\MGenerator\MGenerator.Library\obj\Debug\MGenerator.Library.csprojResolveAssemblyReference.cache
+G:\MGenerator\MGenerator.Library\obj\Debug\MGenerator.Library.dll
+G:\MGenerator\MGenerator.Library\obj\Debug\MGenerator.Library.pdb

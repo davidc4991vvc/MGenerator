@@ -1,0 +1,12 @@
+G:\MGenerator\MGenerator.Utility\obj\Debug\MGenerator.Utility.csprojResolveAssemblyReference.cache
+G:\MGenerator\MGenerator.Utility\bin\Debug\TextBody.txt
+G:\MGenerator\MGenerator.Utility\bin\Debug\TextHeader.txt
+G:\MGenerator\MGenerator.Utility\bin\Debug\generation.ini
+G:\MGenerator\MGenerator.Utility\bin\Debug\MGenerator.Utility.exe
+G:\MGenerator\MGenerator.Utility\bin\Debug\MGenerator.Utility.pdb
+G:\MGenerator\MGenerator.Utility\bin\Debug\INIFileParser.dll
+G:\MGenerator\MGenerator.Utility\bin\Debug\MGenerator.Library.dll
+G:\MGenerator\MGenerator.Utility\bin\Debug\MGenerator.Library.pdb
+G:\MGenerator\MGenerator.Utility\bin\Debug\INIFileParser.pdb
+G:\MGenerator\MGenerator.Utility\obj\Debug\MGenerator.Utility.exe
+G:\MGenerator\MGenerator.Utility\obj\Debug\MGenerator.Utility.pdb
