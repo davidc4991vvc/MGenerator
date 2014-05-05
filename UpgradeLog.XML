@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type='text/xsl' href='_UpgradeReport_Files/UpgradeReport.xslt'?><UpgradeLog>
+<Properties><Property Name="Solution" Value="MGenerator">
+</Property><Property Name="Solution File" Value="D:\MGenerator\MGenerator\MGenerator.sln">
+</Property><Property Name="Date" Value="Tuesday, March 15, 2011">
+</Property><Property Name="Time" Value="13:21 PM">
+</Property></Properties><Event ErrorLevel="0" Project="MGenerator.Utility" Source="MGenerator.Utility\MGenerator.Utility.csproj" Description="Project converted successfully">
+</Event><Event ErrorLevel="3" Project="MGenerator.Utility" Source="MGenerator.Utility\MGenerator.Utility.csproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="MGenerator.Library" Source="..\MGenerator.Library\MGenerator.Library.csproj" Description="Project converted successfully">
+</Event><Event ErrorLevel="3" Project="MGenerator.Library" Source="..\MGenerator.Library\MGenerator.Library.csproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="MGenerator.AppModel" Source="MGenerator.AppModel\MGenerator.AppModel.csproj" Description="Project converted successfully">
+</Event><Event ErrorLevel="3" Project="MGenerator.AppModel" Source="MGenerator.AppModel\MGenerator.AppModel.csproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="" Source="MGenerator.sln" Description="Solution converted successfully">
+</Event><Event ErrorLevel="3" Project="" Source="MGenerator.sln" Description="Converted">
+</Event><Event ErrorLevel="0" Project="MGenerator.Library" Source="..\MGenerator.Library\MGenerator.Library.csproj" Description="Scan complete: Upgrade not required for project files.">
+</Event><Event ErrorLevel="0" Project="MGenerator.AppModel" Source="MGenerator.AppModel\MGenerator.AppModel.csproj" Description="Scan complete: Upgrade not required for project files.">
+</Event><Event ErrorLevel="0" Project="MGenerator.Utility" Source="MGenerator.Utility\MGenerator.Utility.csproj" Description="Scan complete: Upgrade not required for project files.">
+</Event></UpgradeLog>
