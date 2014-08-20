@@ -23,10 +23,10 @@ namespace MGenerator.Utility
                 Console.WriteLine(String.Format("Analyzing {0} \n", genSection.SectionName));
                 Console.WriteLine(String.Format("=============================================== \n", genSection.SectionName));
                 GenerationInfo info = new GenerationInfo();
-                info.CompanyName = genSection.Keys["companyname"];
-                info.DataNameSpace = genSection.Keys["datanamespace"];
-                info.FolderPath = genSection.Keys["path"];
-                info.ServerName = genSection.Keys["server"];
+                info.CompanyName = genSection.Keys["companyname"].Replace(";", "");
+                info.DataNameSpace = genSection.Keys["datanamespace"].Replace(";", "");
+                info.FolderPath = genSection.Keys["path"].Replace(";", "");
+                info.ServerName = genSection.Keys["server"].Replace(";", "");
                 MGenerator.Tools.Generator.GenerateFromDatabase(info);
                 Console.WriteLine(String.Format("=============================================== \n", genSection.SectionName));
                 Console.WriteLine(String.Format("done  \n", genSection.SectionName));

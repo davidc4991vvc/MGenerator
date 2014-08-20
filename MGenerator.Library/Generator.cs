@@ -106,6 +106,7 @@ namespace MGenerator.Tools
                                         ospgen.Generate(RepositoryPathProcedures);
                                         GenerationStep = 3;
 
+                                       
                                         // [1]  Data Access Classes
                                         WriteCsharpFile(GenInfo.CompanyName, GenInfo.DataNameSpace, datab.Name, RepositoryPath, dg.BuildDalClass(String.Format("{0}.{1}", GenInfo.CompanyName, GenInfo.DataNameSpace), datab.Name, t));
                                         GenerationStep = 4;
@@ -199,13 +200,13 @@ namespace MGenerator.Tools
             gNamespace.Imports.Add(new CodeNamespaceImport("System.Runtime.Serialization"));
             gNamespace.Types.Add(ctd);
 
-            String NewCodeFileName = FolderPath + @"\" + ctd.Name + ".generated.vb";
+            String NewCodeFileName = FolderPath + @"\" + ctd.Name + ".generated.cs";
             Stream s = File.Open(NewCodeFileName, FileMode.Create);
 
             StreamWriter sw = new StreamWriter(s);
 
-            //CSharpCodeProvider cscProvider = new CSharpCodeProvider();
-            VBCodeProvider cscProvider = new VBCodeProvider();
+            CSharpCodeProvider cscProvider = new CSharpCodeProvider();
+            //VBCodeProvider cscProvider = new VBCodeProvider();
             ICodeGenerator cscg = cscProvider.CreateGenerator(sw);
             
 
