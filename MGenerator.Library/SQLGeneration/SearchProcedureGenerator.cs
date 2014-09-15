@@ -87,23 +87,23 @@ namespace MGenerator.Tools
 --
 --				Changes to this file may cause incorrect behavior and will be 
 --				lost if the procedure is regenerated.
--- =============================================================================".Replace("#PROCEDURENAME#", name).Replace("##GENDATE##", DateTime.Now.ToLongDateString()).Replace("##DATBASE##", _database.Name).Replace("##SCHEMA##",_table.Schema).Replace("##TABLE##",_table.Name);
+-- ============================================================================= \n\n".Replace("#PROCEDURENAME#", name).Replace("##GENDATE##", DateTime.Now.ToLongDateString()).Replace("##DATBASE##", _database.Name).Replace("##SCHEMA##",_table.Schema).Replace("##TABLE##",_table.Name);
 
 
-            SqlSearchBody = (char)9 + "CREATE PROCEDURE ##NAME##" + "\n";
+            SqlSearchBody = (char)9 + "\n CREATE PROCEDURE ##NAME##" + "\n";
             SqlSearchBody = SqlSearchBody + (char)9 + (char)9  + "##PARAMETERS## \n";
             SqlSearchBody = SqlSearchBody + (char)9  + "AS \n";
             SqlSearchBody = SqlSearchBody + "BEGIN \n";
             SqlSearchBody = SqlSearchBody + (char)9 + (char)9 + "SELECT \n";
-            SqlSearchBody = SqlSearchBody + "##COLUMNS## \n";
+            SqlSearchBody = SqlSearchBody + "\t\t ##COLUMNS## \n";
             SqlSearchBody = SqlSearchBody + (char)9 + (char)9 + "FROM \n";
             SqlSearchBody = SqlSearchBody + (char)9 + (char)9 + (char)9 + "##TABLE## \n";
             SqlSearchBody = SqlSearchBody + (char)9 + (char)9 + "WHERE \n";
-            SqlSearchBody = SqlSearchBody + (char)9 + (char)9 + (char)9 + "##CONTRAINTS## \n";
+            SqlSearchBody = SqlSearchBody + (char)9 + (char)9 + (char)9 + "\t ##CONTRAINTS## \n";
             SqlSearchBody = SqlSearchBody + " END ";
 
             String Constraints = @""; 
-            String ConstraintLine = "(##COLUMN##  LIKE ISNULL(##PARAMETER##,NULL))";
+            String ConstraintLine = "\t\t\t(##COLUMN##  LIKE ISNULL(##PARAMETER##,NULL))";
             String ColumnList = @"";
             int i = 0;
             int ic = _table.Columns.Count - 1;
@@ -147,6 +147,7 @@ namespace MGenerator.Tools
 
             Output = Output + SqlSearchHeader + "\n";
             Output = Output + SqlSearchBody;
+            Output = Output + "\n GO";
 
             File.WriteAllText(ProcedurePath + @"\" + name + ".sql", Output); 
 

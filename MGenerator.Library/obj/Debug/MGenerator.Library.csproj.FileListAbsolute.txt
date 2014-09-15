@@ -6,3 +6,11 @@ G:\MGenerator\MGenerator.Library\bin\Debug\Microsoft.SqlServer.DmfSqlClrWrapper.
 G:\MGenerator\MGenerator.Library\obj\Debug\MGenerator.Library.csprojResolveAssemblyReference.cache
 G:\MGenerator\MGenerator.Library\obj\Debug\MGenerator.Library.dll
 G:\MGenerator\MGenerator.Library\obj\Debug\MGenerator.Library.pdb
+E:\github\mgenerator\MGenerator.Library\bin\Debug\TextBody.txt
+E:\github\mgenerator\MGenerator.Library\bin\Debug\TextHeader.txt
+E:\github\mgenerator\MGenerator.Library\bin\Debug\MGenerator.Library.dll
+E:\github\mgenerator\MGenerator.Library\bin\Debug\MGenerator.Library.pdb
+E:\github\mgenerator\MGenerator.Library\bin\Debug\Microsoft.SqlServer.DmfSqlClrWrapper.dll
+E:\github\mgenerator\MGenerator.Library\obj\Debug\MGenerator.Library.csprojResolveAssemblyReference.cache
+E:\github\mgenerator\MGenerator.Library\obj\Debug\MGenerator.Library.dll
+E:\github\mgenerator\MGenerator.Library\obj\Debug\MGenerator.Library.pdb

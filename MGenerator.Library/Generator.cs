@@ -31,7 +31,7 @@ namespace MGenerator.Tools
         {
             DirectoryInfo d = new DirectoryInfo(GenInfo.FolderPath);
 
-            Microsoft.SqlServer.Management.Common.ServerConnection svrCon = new Microsoft.SqlServer.Management.Common.ServerConnection();
+            Microsoft.SqlServer.Management.Common.ServerConnection svrCon = new Microsoft.SqlServer.Management.Common.ServerConnection(@"(local)\SQLEXPRESS");
             Server svr = new Server(svrCon);
             
             String DbScriptsPath = GenInfo.FolderPath + @"\Procedures";

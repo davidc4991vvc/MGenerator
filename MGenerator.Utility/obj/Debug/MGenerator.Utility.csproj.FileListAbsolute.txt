@@ -10,3 +10,15 @@ G:\MGenerator\MGenerator.Utility\bin\Debug\MGenerator.Library.pdb
 G:\MGenerator\MGenerator.Utility\bin\Debug\INIFileParser.pdb
 G:\MGenerator\MGenerator.Utility\obj\Debug\MGenerator.Utility.exe
 G:\MGenerator\MGenerator.Utility\obj\Debug\MGenerator.Utility.pdb
+E:\github\mgenerator\MGenerator.Utility\obj\Debug\MGenerator.Utility.exe
+E:\github\mgenerator\MGenerator.Utility\obj\Debug\MGenerator.Utility.pdb
+E:\github\mgenerator\MGenerator.Utility\bin\Debug\TextBody.txt
+E:\github\mgenerator\MGenerator.Utility\bin\Debug\TextHeader.txt
+E:\github\mgenerator\MGenerator.Utility\bin\Debug\generation.ini
+E:\github\mgenerator\MGenerator.Utility\bin\Debug\MGenerator.Utility.exe
+E:\github\mgenerator\MGenerator.Utility\bin\Debug\MGenerator.Utility.pdb
+E:\github\mgenerator\MGenerator.Utility\bin\Debug\INIFileParser.dll
+E:\github\mgenerator\MGenerator.Utility\bin\Debug\MGenerator.Library.dll
+E:\github\mgenerator\MGenerator.Utility\bin\Debug\MGenerator.Library.pdb
+E:\github\mgenerator\MGenerator.Utility\bin\Debug\INIFileParser.pdb
+E:\github\mgenerator\MGenerator.Utility\obj\Debug\MGenerator.Utility.csprojResolveAssemblyReference.cache

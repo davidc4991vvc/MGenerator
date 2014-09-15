@@ -1,6 +1,8 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Library", "Library", "{B828A546-29B5-439D-8561-462B192FB458}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Utility", "Utility", "{11DD3185-BF27-4568-ADFD-D9EC8F55E377}"
@@ -11,25 +13,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MGenerator.AppModel", "MGen
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MGenerator.Library", "MGenerator.Library\MGenerator.Library.csproj", "{84B172E3-47B4-4A68-86FF-7F27A130A423}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "m.sql", "m.sql\m.sql.csproj", "{78460C85-0B56-4271-B8AE-0663145F852A}"
+EndProject
 Global
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 4
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = http://vmtfs01.aaanet.com:8080/tfs/insurance
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = MGenerator.AppModel\\MGenerator.AppModel.csproj
-		SccProjectTopLevelParentUniqueName1 = MGenerator.sln
-		SccProjectName1 = MGenerator.AppModel
-		SccLocalPath1 = MGenerator.AppModel
-		SccProjectUniqueName2 = MGenerator.Utility\\MGenerator.Utility.csproj
-		SccProjectTopLevelParentUniqueName2 = MGenerator.sln
-		SccProjectName2 = MGenerator.Utility
-		SccLocalPath2 = MGenerator.Utility
-		SccProjectUniqueName3 = MGenerator.Library\\MGenerator.Library.csproj
-		SccProjectTopLevelParentUniqueName3 = MGenerator.sln
-		SccProjectName3 = MGenerator.Library
-		SccLocalPath3 = MGenerator.Library
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
@@ -47,6 +33,10 @@ Global
 		{84B172E3-47B4-4A68-86FF-7F27A130A423}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{84B172E3-47B4-4A68-86FF-7F27A130A423}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{84B172E3-47B4-4A68-86FF-7F27A130A423}.Release|Any CPU.Build.0 = Release|Any CPU
+		{78460C85-0B56-4271-B8AE-0663145F852A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{78460C85-0B56-4271-B8AE-0663145F852A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{78460C85-0B56-4271-B8AE-0663145F852A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{78460C85-0B56-4271-B8AE-0663145F852A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -55,5 +45,6 @@ Global
 		{9EAC4174-207D-453F-B7CF-91E9F137ED3C} = {B828A546-29B5-439D-8561-462B192FB458}
 		{84B172E3-47B4-4A68-86FF-7F27A130A423} = {B828A546-29B5-439D-8561-462B192FB458}
 		{BCD29960-85A8-4132-B98B-EFAAEC2689F3} = {11DD3185-BF27-4568-ADFD-D9EC8F55E377}
+		{78460C85-0B56-4271-B8AE-0663145F852A} = {11DD3185-BF27-4568-ADFD-D9EC8F55E377}
 	EndGlobalSection
 EndGlobal

@@ -373,7 +373,7 @@ namespace MGenerator.Tools.SqlGeneration
 
         public static void Generate(string serverName, string databaseName, string path, ProcedureGenerationType type)
         {
-            generate(serverName, databaseName, path, type, false);
+            generate(serverName, databaseName, path, ProcedureGenerationType.Create, false);
         }
 
         private static void generate(string serverName, string databaseName, string path, ProcedureGenerationType type, bool justGenerateScriptFiles)
@@ -385,7 +385,7 @@ namespace MGenerator.Tools.SqlGeneration
                 foreach (Table table in database.Tables)
                 {
                     CrudProcedureGenerator procedureGenerator = new CrudProcedureGenerator(database, table);
-                    procedureGenerator.generate(path, type, justGenerateScriptFiles);
+                    procedureGenerator.generate(path, ProcedureGenerationType.Create, justGenerateScriptFiles);
                 }
             }
         }
@@ -397,7 +397,7 @@ namespace MGenerator.Tools.SqlGeneration
             if (!database.IsSystemObject)
             {
                 CrudProcedureGenerator procedureGenerator = new CrudProcedureGenerator(database, database.Tables[tableName]);
-                procedureGenerator.generate(path, type, justGenerateScriptFiles);
+                procedureGenerator.generate(path, ProcedureGenerationType.Create, justGenerateScriptFiles);
             }
         }
 

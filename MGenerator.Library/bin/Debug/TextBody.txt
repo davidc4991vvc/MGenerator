@@ -106,7 +106,7 @@ Replacement Tokens:
         @ERROR_LINE			= ERROR_LINE(),
         @ERROR_MESSAGE		= ERROR_MESSAGE()
         
-		INSERT INTO [master].[dbo].[SqlErrors]
+		INSERT INTO [dbo].[SqlErrors]
            ([ErrorTime]
            ,[ERROR_NUMBER]
            ,[ERROR_SEVERITY]
