@@ -119,7 +119,10 @@ namespace MGenerator.Tools.OOPGeneration
             cpdeDataRow.Direction = FieldDirection.In;
 
             cmmFill.Parameters.Add(cpdeDataRow);
-            cmmFill.Statements.Add(new CodeVariableDeclarationStatement(new CodeTypeReference(table.Name), "obj"));
+            var init_Express = new CodeSnippetExpression("new " + table.Name + "()");
+
+            var obj = new CodeVariableDeclarationStatement(new CodeTypeReference(table.Name), "obj", init_Express);
+            cmmFill.Statements.Add(obj);
 
             foreach (Column c in table.Columns)
             {
@@ -176,8 +179,8 @@ namespace MGenerator.Tools.OOPGeneration
             String cp_name = "cp_" + table.Name;
             cmSelect.Attributes = MemberAttributes.Public;
             cmSelect.Name = "Select";
-            cmSelect.Statements.Add(new CodeSnippetExpression("Me.Access.CreateProcedureCommand(\"ProcedureName\")".Replace("ProcedureName",cp_name)));
-            cmSelect.Statements.Add(new CodeSnippetExpression("Me.Access.AddParameter(\"Operation\", 1, ParameterDirection.Input)"));
+            cmSelect.Statements.Add(new CodeSnippetExpression("this.Access.CreateProcedureCommand(\"ProcedureName\")".Replace("ProcedureName",cp_name)));
+            cmSelect.Statements.Add(new CodeSnippetExpression("this.Access.AddParameter(\"Operation\", 1, ParameterDirection.Input)"));
             cmSelect.Comments.Add(new CodeCommentStatement("Selects One By Primary Key, returns a Data Set"));
 
             foreach (Column c in table.Columns)
@@ -186,12 +189,12 @@ namespace MGenerator.Tools.OOPGeneration
                 {
                     MemberGraph mGraph = new MemberGraph(c);
                     cmSelect.Parameters.Add(mGraph.GetParameter());
-                    cmSelect.Statements.Add(new CodeSnippetExpression("Me.Access.AddParameter(\"" + mGraph.Name + "\", " + mGraph.ParameterName() + ", ParameterDirection.Input)"));
+                    cmSelect.Statements.Add(new CodeSnippetExpression("this.Access.AddParameter(\"" + mGraph.Name + "\", " + mGraph.ParameterName() + ", ParameterDirection.Input)"));
                 }
             }
 
             
-            cmSelect.Statements.Add(new CodeSnippetExpression("Dim value = this.Access.ExecuteDataSet()"));
+            cmSelect.Statements.Add(new CodeSnippetExpression("var value = this.Access.ExecuteDataSet()"));
             cmSelect.Statements.Add(new CodeSnippetExpression("return value"));
             cmSelect.ReturnType = new CodeTypeReference("System.Data.DataSet");
 
@@ -462,68 +465,6 @@ namespace MGenerator.Tools.OOPGeneration
         #endregion 
 
         #region [ Delete Methods ] 
-        /// <summary>
-        /// Delete Query Method
-        /// </summary>
-        /// <param name="table"></param>
-        /// <returns></returns>
-        private CodeMemberMethod BuildDelete(Table table)
-        {
-            CodeMemberMethod cmDelete = new CodeMemberMethod();
-            cmDelete.Attributes = MemberAttributes.Public;
-            cmDelete.Name = "Delete";
-            String cp_name = "cp_" + table.Name;
-            cmDelete.ReturnType = new CodeTypeReference("System.Int32");
-            cmDelete.Statements.Add(new CodeSnippetExpression("this.Access.CreateProcedureCommand(\"ProcedureName\")".Replace("ProcedureName", cp_name)));
-            foreach (Column c in table.Columns)
-            {
-                if (c.InPrimaryKey)
-                {
-                    MemberGraph mGraph = new MemberGraph(c);
-                    cmDelete.Parameters.Add(mGraph.GetParameter());
-                    cmDelete.Statements.Add(new CodeSnippetExpression("this.Access.AddParameter(\"" + mGraph.PropertyName() + "\", " + mGraph.ParameterName() + ", ParameterDirection.Input)"));
-                }
-            } 
-
-            cmDelete.Statements.Add(new CodeSnippetExpression("int value = this.Access.ExecuteNonQuery()"));
-            cmDelete.Statements.Add(new CodeSnippetExpression("return value"));
-            cmDelete.Comments.Add(new CodeCommentStatement("Delete's a record"));
-
-            return cmDelete;
-        }
-        private CodeMemberMethod BuildPocoDelete(Table table)
-        {
-            CodeMemberMethod cmDelete = new CodeMemberMethod();
-            cmDelete.Attributes = MemberAttributes.Public;
-            cmDelete.Name = "Delete";
-            String cp_name = "cp_" + table.Name;
-            cmDelete.Parameters.Add(this.PocoQueryParameter(table.Name));
-            cmDelete.ReturnType = new CodeTypeReference("System.Int32");
-            cmDelete.Statements.Add(new CodeSnippetExpression("this.Access.CreateProcedureCommand(\"ProcedureName\")".Replace("ProcedureName", cp_name)));
-            
-            foreach (Column c in table.Columns)
-            {
-                if (c.InPrimaryKey)
-                {
-                    MemberGraph mGraph = new MemberGraph(c);
-                    if (mGraph.IsNullable)
-                    {
-                        cmDelete.Statements.Add(new CodeSnippetExpression("this.Access.AddParameter(\"" + mGraph.PropertyName() + "\", query." + mGraph.PropertyName() + ".Value, ParameterDirection.Input)"));
-                    }
-                    else
-                    {
-                        cmDelete.Statements.Add(new CodeSnippetExpression("this.Access.AddParameter(\"" + mGraph.PropertyName() + "\", query." + mGraph.PropertyName() + ", ParameterDirection.Input)"));
-                    }
-                    
-                }
-            }
-
-            cmDelete.Statements.Add(new CodeSnippetExpression("int value = this.Access.ExecuteNonQuery()"));
-            cmDelete.Statements.Add(new CodeSnippetExpression("return value"));
-            cmDelete.Comments.Add(new CodeCommentStatement("Delete's a record"));
-
-            return cmDelete;
-        }
         #endregion 
         #endregion 
         #endregion
@@ -554,8 +495,8 @@ namespace MGenerator.Tools.OOPGeneration
                 }
             }
 
-            cmUpdate.Statements.Add(new CodeSnippetExpression("Me.Access.CreateProcedureCommand(\"ProcedureName\")".Replace("ProcedureName", cp_name)));
-            cmUpdate.Statements.Add(new CodeSnippetExpression("Me.Access.AddParameter(\"Operation\", 4, ParameterDirection.Input)"));
+            cmUpdate.Statements.Add(new CodeSnippetExpression("this.Access.CreateProcedureCommand(\"ProcedureName\")".Replace("ProcedureName", cp_name)));
+            cmUpdate.Statements.Add(new CodeSnippetExpression("this.Access.AddParameter(\"Operation\", 4, ParameterDirection.Input)"));
 
             foreach (Column c in table.Columns)
             {
@@ -566,11 +507,11 @@ namespace MGenerator.Tools.OOPGeneration
                 }
                 else
                 {
-                    cmUpdate.Statements.Add(new CodeSnippetExpression("Me.Access.AddParameter(\"" + mGraph.PropertyName() + "\", " + mGraph.ParameterName() + ", ParameterDirection.Input)")); 
+                    cmUpdate.Statements.Add(new CodeSnippetExpression("this.Access.AddParameter(\"" + mGraph.PropertyName() + "\", " + mGraph.ParameterName() + ", ParameterDirection.Input)")); 
                 }
             }
 
-            cmUpdate.Statements.Add(new CodeSnippetExpression("Dim value as Integer = Me.Access.ExecuteNonQuery()"));
+            cmUpdate.Statements.Add(new CodeSnippetExpression("var value  = this.Access.ExecuteNonQuery()"));
             cmUpdate.Statements.Add(new CodeSnippetExpression("return value"));
             cmUpdate.ReturnType = new CodeTypeReference("System.Int32");
             cmUpdate.Comments.Add(new CodeCommentStatement("Updates a Record"));
@@ -588,8 +529,8 @@ namespace MGenerator.Tools.OOPGeneration
 
             String cp_name = "cp_" + table.Name;
 
-            cmUpdate.Statements.Add(new CodeSnippetExpression("Me.Access.CreateProcedureCommand(\"ProcedureName\")".Replace("ProcedureName", cp_name)));
-            cmUpdate.Statements.Add(new CodeSnippetExpression("Me.Access.AddParameter(\"Operation\", 4, ParameterDirection.Input)"));
+            cmUpdate.Statements.Add(new CodeSnippetExpression("this.Access.CreateProcedureCommand(\"ProcedureName\")".Replace("ProcedureName", cp_name)));
+            cmUpdate.Statements.Add(new CodeSnippetExpression("this.Access.AddParameter(\"Operation\", 4, ParameterDirection.Input)"));
 
             CodeStatementCollection AttributeValidationStatements = GraphAttributeSet.BuildAttributeSetStatement(table);
 
@@ -633,8 +574,8 @@ namespace MGenerator.Tools.OOPGeneration
                 }
             }
 
-            cmInsert.Statements.Add(new CodeSnippetExpression("Me.Access.CreateProcedureCommand(\"ProcedureName\")".Replace("ProcedureName", cp_name)));
-            cmInsert.Statements.Add(new CodeSnippetExpression("Me.Access.AddParameter(\"Operation\", 5, ParameterDirection.Input)"));
+            cmInsert.Statements.Add(new CodeSnippetExpression("this.Access.CreateProcedureCommand(\"ProcedureName\")".Replace("ProcedureName", cp_name)));
+            cmInsert.Statements.Add(new CodeSnippetExpression("this.Access.AddParameter(\"Operation\", 5, ParameterDirection.Input)"));
 
             foreach (Column c in table.Columns)
             {
@@ -645,11 +586,11 @@ namespace MGenerator.Tools.OOPGeneration
                 }
                 else
                 {
-                    cmInsert.Statements.Add(new CodeSnippetExpression("Me.Access.AddParameter(\"" + mGraph.PropertyName() + "\", " + mGraph.ParameterName() + " , ParameterDirection.Input)"));
+                    cmInsert.Statements.Add(new CodeSnippetExpression("this.Access.AddParameter(\"" + mGraph.PropertyName() + "\", " + mGraph.ParameterName() + " , ParameterDirection.Input)"));
                 }
             }
 
-            cmInsert.Statements.Add(new CodeSnippetExpression("return Me.Access.ExecuteNonQuery()"));
+            cmInsert.Statements.Add(new CodeSnippetExpression("return this.Access.ExecuteNonQuery()"));
             cmInsert.Comments.Add(new CodeCommentStatement("Inserts a record"));
             return cmInsert;
         }
@@ -662,9 +603,9 @@ namespace MGenerator.Tools.OOPGeneration
             cmInsert.Attributes = MemberAttributes.Public;
             cmInsert.ReturnType = new CodeTypeReference("System.Int32");
             cmInsert.Parameters.Add(this.PocoQueryParameter(table.Name));
-      
-            cmInsert.Statements.Add(new CodeSnippetExpression("Me.Access.CreateProcedureCommand(\"ProcedureName\")".Replace("ProcedureName", cp_name)));
-            cmInsert.Statements.Add(new CodeSnippetExpression("Me.Access.AddParameter(\"Operation\", 5, ParameterDirection.Input)"));
+
+            cmInsert.Statements.Add(new CodeSnippetExpression("this.Access.CreateProcedureCommand(\"ProcedureName\")".Replace("ProcedureName", cp_name)));
+            cmInsert.Statements.Add(new CodeSnippetExpression("this.Access.AddParameter(\"Operation\", 5, ParameterDirection.Input)"));
 
             CodeStatementCollection AttributeValidationStatmenets = GraphAttributeSet.BuildAttributeSetStatement(table);
 
@@ -673,7 +614,7 @@ namespace MGenerator.Tools.OOPGeneration
                 cmInsert.Statements.Add(AttributeValidationStatmenet);
             }
 
-            cmInsert.Statements.Add(new CodeSnippetExpression("return Me.Access.ExecuteNonQuery()"));
+            cmInsert.Statements.Add(new CodeSnippetExpression("return this.Access.ExecuteNonQuery()"));
             cmInsert.Comments.Add(new CodeCommentStatement("Inserts a record"));
             return cmInsert;
         }
@@ -692,18 +633,19 @@ namespace MGenerator.Tools.OOPGeneration
             cmDelete.Name = "Delete";
             String cp_name = "cp_" + table.Name;
             cmDelete.ReturnType = new CodeTypeReference("System.Int32");
-            cmDelete.Statements.Add(new CodeSnippetExpression("Me.Access.CreateProcedureCommand(\"ProcedureName\")".Replace("ProcedureName", cp_name)));
+            cmDelete.Statements.Add(new CodeSnippetExpression("this.Access.CreateProcedureCommand(\"ProcedureName\")".Replace("ProcedureName", cp_name)));
+            cmDelete.Statements.Add(new CodeSnippetExpression("this.Access.AddParameter(\"Operation\", 6, ParameterDirection.Input)"));
             foreach (Column c in table.Columns)
             {
                 if (c.InPrimaryKey)
                 {
                     MemberGraph mGraph = new MemberGraph(c);
                     cmDelete.Parameters.Add(mGraph.GetParameter());
-                    cmDelete.Statements.Add(new CodeSnippetExpression("Me.Access.AddParameter(\"" + mGraph.PropertyName() + "\", " + mGraph.ParameterName() + ", ParameterDirection.Input)"));
+                    cmDelete.Statements.Add(new CodeSnippetExpression("this.Access.AddParameter(\"" + mGraph.PropertyName() + "\", " + mGraph.ParameterName() + ", ParameterDirection.Input)"));
                 }
-            } 
+            }
 
-            cmDelete.Statements.Add(new CodeSnippetExpression("Dim value as Integer = Me.Access.ExecuteNonQuery()"));
+            cmDelete.Statements.Add(new CodeSnippetExpression("var value = this.Access.ExecuteNonQuery()"));
             cmDelete.Statements.Add(new CodeSnippetExpression("return value"));
             cmDelete.Comments.Add(new CodeCommentStatement("Delete's a record"));
 
@@ -717,8 +659,10 @@ namespace MGenerator.Tools.OOPGeneration
             String cp_name = "cp_" + table.Name;
             cmDelete.Parameters.Add(this.PocoQueryParameter(table.Name));
             cmDelete.ReturnType = new CodeTypeReference("System.Int32");
-            cmDelete.Statements.Add(new CodeSnippetExpression("Me.Access.CreateProcedureCommand(\"ProcedureName\")".Replace("ProcedureName", cp_name)));
-            
+            cmDelete.Statements.Add(new CodeSnippetExpression("this.Access.CreateProcedureCommand(\"ProcedureName\")".Replace("ProcedureName", cp_name)));
+            cmDelete.Statements.Add(new CodeSnippetExpression("this.Access.AddParameter(\"Operation\", 6, ParameterDirection.Input)"));
+
+
             foreach (Column c in table.Columns)
             {
                 if (c.InPrimaryKey)
@@ -727,16 +671,16 @@ namespace MGenerator.Tools.OOPGeneration
                     if (mGraph.IsNullable)
                     {
 
-                        cmDelete.Statements.Add(new CodeSnippetExpression("Me.Access.AddParameter(\"" + mGraph.PropertyName() + "\", query." + mGraph.PropertyName() + ".Value, ParameterDirection.Input)"));
+                        cmDelete.Statements.Add(new CodeSnippetExpression("this.Access.AddParameter(\"" + mGraph.PropertyName() + "\", query." + mGraph.PropertyName() + ".Value, ParameterDirection.Input)"));
                     }
                     else
                     {
-                        cmDelete.Statements.Add(new CodeSnippetExpression("Me.Access.AddParameter(\"" + mGraph.PropertyName() + "\", query." + mGraph.PropertyName() + ", ParameterDirection.Input)"));
+                        cmDelete.Statements.Add(new CodeSnippetExpression("this.Access.AddParameter(\"" + mGraph.PropertyName() + "\", query." + mGraph.PropertyName() + ", ParameterDirection.Input)"));
                     }
                 }
             }
 
-            cmDelete.Statements.Add(new CodeSnippetExpression("Dim value as Integer = this.Access.ExecuteNonQuery()"));
+            cmDelete.Statements.Add(new CodeSnippetExpression("var value = this.Access.ExecuteNonQuery()"));
             cmDelete.Statements.Add(new CodeSnippetExpression("return value"));
             cmDelete.Comments.Add(new CodeCommentStatement("Delete's a record"));
 

@@ -31,7 +31,7 @@ namespace MGenerator.Tools
         {
             DirectoryInfo d = new DirectoryInfo(GenInfo.FolderPath);
 
-            Microsoft.SqlServer.Management.Common.ServerConnection svrCon = new Microsoft.SqlServer.Management.Common.ServerConnection(@"(local)\SQLEXPRESS");
+            Microsoft.SqlServer.Management.Common.ServerConnection svrCon = new Microsoft.SqlServer.Management.Common.ServerConnection(GenInfo.ServerName);
             Server svr = new Server(svrCon);
             
             String DbScriptsPath = GenInfo.FolderPath + @"\Procedures";
@@ -42,129 +42,131 @@ namespace MGenerator.Tools
                 {
                     if (!(DatabasesToIgnore().Contains(datab.Name)))
                     {
-
-                        Console.Write("Generating Code for Database: " + datab.Name + "\n");
-                        String RepositoryPath = GenInfo.FolderPath + @"\" + datab.Name;  // The Current Repository 
-                        String DataLayerNamespace = String.Format("{0}.{1}.{2}", GenInfo.CompanyName, GenInfo.DataNameSpace, datab.Name);
-
-                        #region [ Clean / Create Directory ]
-                        if (Directory.Exists(RepositoryPath))
+                        if (datab.Name.ToLower() == GenInfo.DataBase.ToLower())
                         {
-                            // Directory Exists clean it out
-                            DirectoryInfo dRepository = new DirectoryInfo(RepositoryPath);
-                            foreach (FileInfo f in dRepository.GetFiles("*.*", SearchOption.AllDirectories))
+                            Console.Write("Generating Code for Database: " + datab.Name + "\n");
+                            String RepositoryPath = GenInfo.FolderPath + @"\" + datab.Name;  // The Current Repository 
+                            String DataLayerNamespace = String.Format("{0}.{1}.{2}", GenInfo.CompanyName, GenInfo.DataNameSpace, datab.Name);
+
+                            #region [ Clean / Create Directory ]
+                            if (Directory.Exists(RepositoryPath))
                             {
-                                f.Delete();
-                            }
-                        }
-                        else
-                        {
-                            Directory.CreateDirectory(RepositoryPath);
-                        }
-                        #endregion
-
-                        #region [ Tables ]
-                        String RepositoryPathProcedures = RepositoryPath + @"\Procedures";
-
-                        if (Directory.Exists(RepositoryPathProcedures))
-                        {
-                            Directory.Delete(RepositoryPathProcedures);
-                        }
-                        Directory.CreateDirectory(RepositoryPathProcedures);
-                        Int32 GenerationStep = 0;
-                        DALGenerator dg = new DALGenerator();
-                        POCOGenerator pg = new POCOGenerator();
-
-                        foreach (Table t in datab.Tables)
-                        {
-                            GenerationStep = 0;
-                            try
-                            {
-                                if (t.Name == "Loan")
+                                // Directory Exists clean it out
+                                DirectoryInfo dRepository = new DirectoryInfo(RepositoryPath);
+                                foreach (FileInfo f in dRepository.GetFiles("*.*", SearchOption.AllDirectories))
                                 {
-                                    "$".IsNormalized();
+                                    f.Delete();
                                 }
-                                if (!(t.IsSystemObject))
+                            }
+                            else
+                            {
+                                Directory.CreateDirectory(RepositoryPath);
+                            }
+                            #endregion
+
+                            #region [ Tables ]
+                            String RepositoryPathProcedures = RepositoryPath + @"\Procedures";
+
+                            if (Directory.Exists(RepositoryPathProcedures))
+                            {
+                                Directory.Delete(RepositoryPathProcedures);
+                            }
+                            Directory.CreateDirectory(RepositoryPathProcedures);
+                            Int32 GenerationStep = 0;
+                            DALGenerator dg = new DALGenerator();
+                            POCOGenerator pg = new POCOGenerator();
+
+                            foreach (Table t in datab.Tables)
+                            {
+                                GenerationStep = 0;
+                                try
                                 {
-                                    // Check if the table has a primary key, if not then dont generate anything. Table muist be normalized
-                                    if (ValidateSqlTable(t))
+                                    if (t.Name == "Loan")
                                     {
-                                        #region [ Generation Root ]
-                                        String cpFilename = RepositoryPathProcedures + @"\\" + "cp_" + t.Name + ".sql";
-                                        String sspFileName = RepositoryPathProcedures + @"\\" + "ssp_" + t.Name + ".sql";
-                                        String EntityFileName = RepositoryPath + @"\\" + t.Name + ".cs";
-                                        String DALFileName = RepositoryPath + @"\\" + t.Name + "DAL.cs";
-                                        String DOMFileName = RepositoryPath + @"\\" + t.Name + "DomainObject.cs";
+                                        "$".IsNormalized();
+                                    }
+                                    if (!(t.IsSystemObject))
+                                    {
+                                        // Check if the table has a primary key, if not then dont generate anything. Table muist be normalized
+                                        if (ValidateSqlTable(t))
+                                        {
+                                            #region [ Generation Root ]
+                                            String cpFilename = RepositoryPathProcedures + @"\\" + "cp_" + t.Name + ".sql";
+                                            String sspFileName = RepositoryPathProcedures + @"\\" + "ssp_" + t.Name + ".sql";
+                                            String EntityFileName = RepositoryPath + @"\\" + t.Name + ".cs";
+                                            String DALFileName = RepositoryPath + @"\\" + t.Name + "DAL.cs";
+                                            String DOMFileName = RepositoryPath + @"\\" + t.Name + "DomainObject.cs";
 
-                                        GenerationStep = 1;
-                                        // [0]  Stored Procedures
-                                        MGenerator.Tools.SqlGeneration.CrudProcedureGenerator gen = new SqlGeneration.CrudProcedureGenerator(datab, t);
-                                        gen.Generate(RepositoryPathProcedures, MGenerator.Tools.SqlGeneration.ProcedureGenerationType.Alter);
-                                        GenerationStep = 2;
+                                            GenerationStep = 1;
+                                            // [0]  Stored Procedures
+                                            MGenerator.Tools.SqlGeneration.CrudProcedureGenerator gen = new SqlGeneration.CrudProcedureGenerator(datab, t);
+                                            gen.Generate(RepositoryPathProcedures, MGenerator.Tools.SqlGeneration.ProcedureGenerationType.Alter);
+                                            GenerationStep = 2;
 
-                                        ObjectiveSearchProcedureGenerator ospgen = new ObjectiveSearchProcedureGenerator(datab, t);
-                                        ospgen.Generate(RepositoryPathProcedures);
-                                        GenerationStep = 3;
+                                            ObjectiveSearchProcedureGenerator ospgen = new ObjectiveSearchProcedureGenerator(datab, t);
+                                            ospgen.Generate(RepositoryPathProcedures);
+                                            GenerationStep = 3;
 
-                                       
-                                        // [1]  Data Access Classes
-                                        WriteCsharpFile(GenInfo.CompanyName, GenInfo.DataNameSpace, datab.Name, RepositoryPath, dg.BuildDalClass(String.Format("{0}.{1}", GenInfo.CompanyName, GenInfo.DataNameSpace), datab.Name, t));
-                                        GenerationStep = 4;
 
-                                        // [2] Entity / Structure Class
-                                        WriteCsharpFile(GenInfo.CompanyName, GenInfo.DataNameSpace, datab.Name, RepositoryPath, pg.BuildPoc(t));
-                                        GenerationStep = 5;
+                                            // [1]  Data Access Classes
+                                            WriteCsharpFile(GenInfo.CompanyName, GenInfo.DataNameSpace, datab.Name, RepositoryPath, dg.BuildDalClass(String.Format("{0}.{1}", GenInfo.CompanyName, GenInfo.DataNameSpace), datab.Name, t));
+                                            GenerationStep = 4;
 
-                                        // [3]  Service Layer 
-                                        DomainServiceGraph svcgen = new DomainServiceGraph();
-                                        WriteCsharpFile(GenInfo.CompanyName, GenInfo.DataNameSpace, datab.Name, RepositoryPath, svcgen.BuildDomainObject(String.Format("{0}.{1}", GenInfo.CompanyName, GenInfo.DataNameSpace), datab.Name, t));
-                                        GenerationStep = 6;
+                                            // [2] Entity / Structure Class
+                                            WriteCsharpFile(GenInfo.CompanyName, GenInfo.DataNameSpace, datab.Name, RepositoryPath, pg.BuildPoc(t));
+                                            GenerationStep = 5;
 
-                                        #endregion
+                                            // [3]  Service Layer 
+                                            DomainServiceGraph svcgen = new DomainServiceGraph();
+                                            WriteCsharpFile(GenInfo.CompanyName, GenInfo.DataNameSpace, datab.Name, RepositoryPath, svcgen.BuildDomainObject(String.Format("{0}.{1}", GenInfo.CompanyName, GenInfo.DataNameSpace), datab.Name, t));
+                                            GenerationStep = 6;
 
-                                        Console.Write(t.Name + "....COMPLETE" + "\n");
+                                            #endregion
+
+                                            Console.Write(t.Name + "....COMPLETE" + "\n");
+                                        }
                                     }
                                 }
-                            }
-                            catch (Exception x)
-                            {
-                                Console.Write(t.Name + "....ERROR" + "\n");
-                                // File.WriteAllText(RepositoryPath + t.Name + ".txt", x.Message + "\n Generation Step:" + GenerationStep.ToString() );
-                                continue;
-                            }
-                        }
-                        #endregion
-
-                        #region [ Views ]
-                        foreach (View view in datab.Views)
-                        {
-                            try
-                            {
-                                if (view.Name == "vwLOLicense")
+                                catch (Exception x)
                                 {
-                                    String fd = "";
+                                    Console.Write(t.Name + "....ERROR" + "\n");
+                                    // File.WriteAllText(RepositoryPath + t.Name + ".txt", x.Message + "\n Generation Step:" + GenerationStep.ToString() );
+                                    continue;
                                 }
-                                if (!(view.IsSystemObject))
+                            }
+                            #endregion
+
+                            #region [ Views ]
+                            foreach (View view in datab.Views)
+                            {
+                                try
                                 {
-                                    if (ValidateSqlView(view))
+                                    if (view.Name == "vwLOLicense")
                                     {
-                                        ObjectiveSearchProcedureGenerator ospgen = new ObjectiveSearchProcedureGenerator(datab, view);
-                                        DomainServiceGraph svcgen = new DomainServiceGraph();
-                                        ospgen.Generate(RepositoryPathProcedures);
-                                        WriteCsharpFile(GenInfo.CompanyName, GenInfo.DataNameSpace, datab.Name, RepositoryPath, dg.BuildDalClass(String.Format("{0}.{1}", GenInfo.CompanyName, GenInfo.DataNameSpace), datab.Name, view));
-                                        WriteCsharpFile(GenInfo.CompanyName, GenInfo.DataNameSpace, datab.Name, RepositoryPath, pg.BuildPoco(view));
-                                        WriteCsharpFile(GenInfo.CompanyName, GenInfo.DataNameSpace, datab.Name, RepositoryPath, svcgen.BuildDomainObject(String.Format("{0}.{1}", GenInfo.CompanyName, GenInfo.DataNameSpace), datab.Name, view));
-                                        Console.Write(view.Name + "....COMPLETE" + "\n");
+                                        String fd = "";
+                                    }
+                                    if (!(view.IsSystemObject))
+                                    {
+                                        if (ValidateSqlView(view))
+                                        {
+                                            ObjectiveSearchProcedureGenerator ospgen = new ObjectiveSearchProcedureGenerator(datab, view);
+                                            DomainServiceGraph svcgen = new DomainServiceGraph();
+                                            ospgen.Generate(RepositoryPathProcedures);
+                                            WriteCsharpFile(GenInfo.CompanyName, GenInfo.DataNameSpace, datab.Name, RepositoryPath, dg.BuildDalClass(String.Format("{0}.{1}", GenInfo.CompanyName, GenInfo.DataNameSpace), datab.Name, view));
+                                            WriteCsharpFile(GenInfo.CompanyName, GenInfo.DataNameSpace, datab.Name, RepositoryPath, pg.BuildPoco(view));
+                                            WriteCsharpFile(GenInfo.CompanyName, GenInfo.DataNameSpace, datab.Name, RepositoryPath, svcgen.BuildDomainObject(String.Format("{0}.{1}", GenInfo.CompanyName, GenInfo.DataNameSpace), datab.Name, view));
+                                            Console.Write(view.Name + "....COMPLETE" + "\n");
+                                        }
                                     }
                                 }
+                                catch (Exception x)
+                                {
+                                    Console.Write(view.Name + "....ERROR" + "\n");
+                                    continue;
+                                }
                             }
-                            catch(Exception x)
-                            {
-                                Console.Write(view.Name + "....ERROR" + "\n");
-                                continue;
-                            }
+                            #endregion
                         }
-                        #endregion
                     }
                 }
             }

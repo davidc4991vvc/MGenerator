@@ -25,7 +25,10 @@ namespace MGenerator.Library
 		
 		public GenerationInfo()
 		{
+            this.DataBase = "";
 		}
-		
-	}
+
+
+        public string DataBase { get; set; }
+    }
 }

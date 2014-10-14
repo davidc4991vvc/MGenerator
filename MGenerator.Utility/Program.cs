@@ -27,6 +27,7 @@ namespace MGenerator.Utility
                 info.DataNameSpace = genSection.Keys["datanamespace"].Replace(";", "");
                 info.FolderPath = genSection.Keys["path"].Replace(";", "");
                 info.ServerName = genSection.Keys["server"].Replace(";", "");
+                info.DataBase = genSection.Keys["database"].Replace(";", "");
                 MGenerator.Tools.Generator.GenerateFromDatabase(info);
                 Console.WriteLine(String.Format("=============================================== \n", genSection.SectionName));
                 Console.WriteLine(String.Format("done  \n", genSection.SectionName));
