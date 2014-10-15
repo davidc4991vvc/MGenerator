@@ -13,10 +13,11 @@ namespace MGenerator.Utility
     {
         static void Main(string[] args)
         {
+
             Console.WriteLine("Reading Generation Info File \n");
             FileIniDataParser parser = new FileIniDataParser();
             IniData genData = parser.LoadFile("generation.ini");
-            // TODO: Implement Functionality Here
+
             Console.WriteLine("Generation Info File Read \n");
             foreach (SectionData genSection in genData.Sections)
             {
