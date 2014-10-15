@@ -1,6 +1,0 @@
-E:\github\mgenerator\m.sql\bin\Debug\m.sql.exe.config
-E:\github\mgenerator\m.sql\bin\Debug\m.sql.exe
-E:\github\mgenerator\m.sql\bin\Debug\m.sql.pdb
-E:\github\mgenerator\m.sql\obj\Debug\m.sql.csprojResolveAssemblyReference.cache
-E:\github\mgenerator\m.sql\obj\Debug\m.sql.exe
-E:\github\mgenerator\m.sql\obj\Debug\m.sql.pdb

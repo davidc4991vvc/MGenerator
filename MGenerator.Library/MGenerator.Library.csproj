@@ -166,7 +166,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DatabaseSource.cs" />
     <Compile Include="DomainOptions.cs" />
     <Compile Include="Extensions\CodeMemberExtensions.cs" />
     <Compile Include="Extensions\CodeMemberMethodExtensions.cs" />
@@ -206,7 +205,6 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Managed\ManagedGenerator.cd" />
     <None Include="Options.cd" />
   </ItemGroup>
   <ItemGroup>
