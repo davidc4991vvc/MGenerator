@@ -16,6 +16,7 @@ using Microsoft.CSharp;
 using System.IO;
 using Microsoft.VisualBasic;
 using MGenerator.Tools.OOPGeneration;
+using MGenerator.Library.ApiGeneration;
 
 namespace MGenerator.Tools
 {
@@ -121,6 +122,10 @@ namespace MGenerator.Tools
                                             WriteCsharpFile(GenInfo.CompanyName, GenInfo.DataNameSpace, datab.Name, RepositoryPath, svcgen.BuildDomainObject(String.Format("{0}.{1}", GenInfo.CompanyName, GenInfo.DataNameSpace), datab.Name, t));
                                             GenerationStep = 6;
 
+                                            // [4] API 
+                                            ApiGraph api = new ApiGraph();
+                                            string api_name = 
+                                            api.WriteApiStation(GenInfo, datab, t,RepositoryPath);
                                             #endregion
 
                                             Console.Write(t.Name + "....COMPLETE" + "\n");

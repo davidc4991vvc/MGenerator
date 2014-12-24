@@ -166,6 +166,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ApiGeneration\ApiGenerator.cs" />
+    <Compile Include="ApiGeneration\ApiGraph.cs" />
     <Compile Include="DomainOptions.cs" />
     <Compile Include="Extensions\CodeMemberExtensions.cs" />
     <Compile Include="Extensions\CodeMemberMethodExtensions.cs" />
